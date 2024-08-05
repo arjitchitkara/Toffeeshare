@@ -4,10 +4,15 @@ import { v4 as uuidv4 } from "uuid";
 const wss = new Server({ port: 8080 });
 
 wss.on("connection", (ws: WebSocket) => {
-  ws.on("message", (message: string) => {
+  ws.on("message", (message, isBinary) => {
+    if (isBinary) {
+      console.log("Received binary data, not processing as JSON.");
+      return;
+    }
+
     let data;
     try {
-      data = JSON.parse(message);
+      data = JSON.parse(message.toString());
     } catch (error) {
       console.error("Invalid JSON:", error);
       return;
@@ -21,7 +26,7 @@ wss.on("connection", (ws: WebSocket) => {
       case "signal":
         wss.clients.forEach((client) => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send(message);
+            client.send(message.toString());
           }
         });
         break;

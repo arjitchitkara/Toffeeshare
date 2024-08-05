@@ -22,7 +22,7 @@ export default function Upload() {
 
       ws.onmessage = (event) => {
         try {
-          const data = JSON.parse(event.data);
+          const data = JSON.parse(event.data.toString());
           console.log("Received WebSocket message:", data);
 
           if (data.type === "file-id") {

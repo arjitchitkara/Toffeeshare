@@ -27,10 +27,14 @@ const ws_1 = __importStar(require("ws"));
 const uuid_1 = require("uuid");
 const wss = new ws_1.Server({ port: 8080 });
 wss.on("connection", (ws) => {
-    ws.on("message", (message) => {
+    ws.on("message", (message, isBinary) => {
+        if (isBinary) {
+            console.log("Received binary data, not processing as JSON.");
+            return;
+        }
         let data;
         try {
-            data = JSON.parse(message);
+            data = JSON.parse(message.toString());
         }
         catch (error) {
             console.error("Invalid JSON:", error);
@@ -44,7 +48,7 @@ wss.on("connection", (ws) => {
             case "signal":
                 wss.clients.forEach((client) => {
                     if (client !== ws && client.readyState === ws_1.default.OPEN) {
-                        client.send(message);
+                        client.send(message.toString());
                     }
                 });
                 break;
