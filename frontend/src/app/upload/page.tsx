@@ -48,7 +48,11 @@ export default function Upload() {
                 const reader = new FileReader();
                 reader.onload = function (event) {
                   if (event.target) {
-                    conn.send(event.target.result);
+                    conn.send({
+                      data: event.target.result,
+                      type: file.type,
+                      name: file.name,
+                    });
                   }
                 };
                 reader.readAsArrayBuffer(file);

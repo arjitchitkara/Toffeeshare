@@ -3,9 +3,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Peer from "peerjs";
 
+interface FileMessage {
+  data: ArrayBuffer | Uint8Array;
+  type: string;
+  name: string;
+}
+
 export default function Download() {
   const router = useRouter();
   const [fileUrl, setFileUrl] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
   const [peerId, setPeerId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,12 +52,31 @@ export default function Download() {
 
       conn.on("open", () => {
         console.log("Peer data channel opened");
-        conn.on("data", (data) => {
+        conn.on("data", (data: unknown) => {
           console.log("Received data:", data);
-          if (data instanceof Uint8Array || data instanceof ArrayBuffer) {
-            const blob = new Blob([data], { type: "application/octet-stream" });
-            const url = URL.createObjectURL(blob);
-            setFileUrl(url);
+          // Ensure the data matches the expected structure
+          if (
+            typeof data === "object" &&
+            data !== null &&
+            "data" in data &&
+            "type" in data &&
+            "name" in data
+          ) {
+            const message = data as FileMessage;
+            if (
+              message.data instanceof Uint8Array ||
+              message.data instanceof ArrayBuffer
+            ) {
+              const blob = new Blob([message.data], { type: message.type });
+              const url = URL.createObjectURL(blob);
+              setFileUrl(url);
+              setFileName(message.name);
+            }
+          } else {
+            console.error(
+              "Received data does not match expected structure",
+              data
+            );
           }
           conn.close();
           ws.close();
@@ -67,9 +93,7 @@ export default function Download() {
   return (
     <div>
       {fileUrl ? (
-        <a href={fileUrl} download="downloaded-file.pdf">
-          {" "}
-          {/* You can customize the file name */}
+        <a href={fileUrl} download={fileName || "downloaded-file"}>
           Download File
         </a>
       ) : (
