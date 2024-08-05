@@ -5,7 +5,13 @@ const wss = new Server({ port: 8080 });
 
 wss.on("connection", (ws: WebSocket) => {
   ws.on("message", (message: string) => {
-    const data = JSON.parse(message);
+    let data;
+    try {
+      data = JSON.parse(message);
+    } catch (error) {
+      console.error("Invalid JSON:", error);
+      return;
+    }
 
     switch (data.type) {
       case "upload":
@@ -19,6 +25,8 @@ wss.on("connection", (ws: WebSocket) => {
           }
         });
         break;
+      default:
+        console.error("Unknown message type:", data.type);
     }
   });
 });
