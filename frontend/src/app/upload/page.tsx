@@ -45,7 +45,13 @@ export default function Upload() {
             peer.on("connection", (conn) => {
               conn.on("open", () => {
                 console.log("Peer data channel opened");
-                conn.send(file);
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                  if (event.target) {
+                    conn.send(event.target.result);
+                  }
+                };
+                reader.readAsArrayBuffer(file);
                 conn.on("close", () => {
                   console.log("Peer data channel closed");
                   ws.close();

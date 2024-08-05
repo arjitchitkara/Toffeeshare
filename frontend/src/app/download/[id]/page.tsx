@@ -5,7 +5,7 @@ import Peer from "peerjs";
 
 export default function Download() {
   const router = useRouter();
-  const [file, setFile] = useState<string | null>(null);
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
   const [peerId, setPeerId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,12 +47,10 @@ export default function Download() {
         console.log("Peer data channel opened");
         conn.on("data", (data) => {
           console.log("Received data:", data);
-          if (data instanceof Uint8Array) {
+          if (data instanceof Uint8Array || data instanceof ArrayBuffer) {
             const blob = new Blob([data], { type: "application/octet-stream" });
-            setFile(URL.createObjectURL(blob));
-          } else if (data instanceof ArrayBuffer) {
-            const blob = new Blob([data], { type: "application/octet-stream" });
-            setFile(URL.createObjectURL(blob));
+            const url = URL.createObjectURL(blob);
+            setFileUrl(url);
           }
           conn.close();
           ws.close();
@@ -68,8 +66,10 @@ export default function Download() {
 
   return (
     <div>
-      {file ? (
-        <a href={file} download="file">
+      {fileUrl ? (
+        <a href={fileUrl} download="downloaded-file.pdf">
+          {" "}
+          {/* You can customize the file name */}
           Download File
         </a>
       ) : (
