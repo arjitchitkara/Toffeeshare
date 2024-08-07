@@ -1,9 +1,9 @@
 "use client";
-
 import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import Peer from "peerjs";
 import UploadCard from "./UploadCard";
+import Image from "next/image";
 
 export default function DragAndDrop() {
   const [file, setFile] = useState<File | null>(null);
@@ -128,38 +128,45 @@ export default function DragAndDrop() {
           </div>
         </div>
       ) : (
-        <div
-          className="relative border-2 border-gray-500 rounded-lg w-80 h-80 flex items-center justify-center"
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          <input
-            type="file"
-            className="hidden"
-            onChange={handleFileChange}
-            id="fileInput"
-          />
-          <label
-            htmlFor="fileInput"
-            className={`absolute inset-0 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed rounded-lg transition ${
-              dragging
-                ? "border-orange-500 bg-gray-800"
-                : "border-gray-400 bg-gray-700"
-            } hover:bg-gray-600`}
+        <div className="relative flex items-center justify-center">
+          <div className="absolute border-2 border-gray-500 rounded-[40px] w-96 h-96 bg-gray-700" />
+          <div
+            className="relative border-2 border-gray-500 rounded-[40px] w-80 h-80 flex items-center justify-center  m-6"
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
           >
-            {file ? (
-              <p>{file.name}</p>
-            ) : (
-              <>
-                <div className="text-4xl text-orange-500 mb-2">+</div>
-                <p className="text-center">
-                  Click to browse or drag files here to start sharing
-                </p>
-              </>
-            )}
-          </label>
+            <input
+              type="file"
+              className="hidden"
+              onChange={handleFileChange}
+              id="fileInput"
+            />
+            <label
+              htmlFor="fileInput"
+              className={`absolute inset-0 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed rounded-[40px] transition ${
+                dragging ? "border-orange-500" : "border-gray-400"
+              } hover:bg-gray-600`}
+            >
+              {file ? (
+                <p>{file.name}</p>
+              ) : (
+                <>
+                  <Image
+                    src="/plus.png"
+                    alt="plus"
+                    width={40}
+                    height={40}
+                    className="mb-2"
+                  />
+                  <p className="text-center">
+                    Click to browse or drag files here to start sharing
+                  </p>
+                </>
+              )}
+            </label>
+          </div>
         </div>
       )}
     </div>

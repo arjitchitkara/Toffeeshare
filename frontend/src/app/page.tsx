@@ -45,10 +45,11 @@ export default function Home() {
             <ul className="space-y-2">
               <li className="flex items-center">
                 <span className="mr-2">
-                  <img
-                    src="/Infinity.svg"
+                  <Image
+                    src="/Infinity.png"
                     alt="Infinity symbol"
-                    className="w-6 h-6"
+                    width={23}
+                    height={23}
                   />
                 </span>
                 No file size limit
