@@ -1,3 +1,5 @@
+// src/pages/download/[id]/page.tsx
+
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -94,9 +96,12 @@ export default function Download() {
   return (
     <div>
       {fileUrl ? (
-        <a href={fileUrl} download={fileName || "downloaded-file"}>
-          Download File
-        </a>
+        <div>
+          <p>File ready for download:</p>
+          <a href={fileUrl} download={fileName || "downloaded-file"}>
+            {fileName || "Download File"}
+          </a>
+        </div>
       ) : (
         <p>Waiting for file...</p>
       )}
