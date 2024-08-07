@@ -1,6 +1,7 @@
 "use client";
 import { useState, ChangeEvent } from "react";
 import Peer from "peerjs";
+import { Button } from "@/components/ui/button";
 
 export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
@@ -74,7 +75,8 @@ export default function Upload() {
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
-      <button onClick={handleUpload}>Upload</button>
+
+      <Button onClick={handleUpload}>Upload</Button>
       {link && (
         <a href={link} target="_blank" rel="noopener noreferrer">
           Download Link
