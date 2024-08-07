@@ -38,8 +38,9 @@ export default function Download() {
         ],
       },
     });
+    const websocket_server = process.env.NEXT_PUBLIC_WS_URL;
 
-    const ws = new WebSocket("ws://localhost:8080");
+    const ws = new WebSocket(websocket_server || "");
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");

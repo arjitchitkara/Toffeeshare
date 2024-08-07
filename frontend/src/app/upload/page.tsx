@@ -11,10 +11,11 @@ export default function Upload() {
       setFile(e.target.files[0]);
     }
   };
+  const websocket_server = process.env.NEXT_PUBLIC_WS_URL;
 
   const handleUpload = () => {
     if (file) {
-      const ws = new WebSocket("ws://localhost:8080");
+      const ws = new WebSocket(websocket_server || "");
       ws.onopen = () => {
         console.log("WebSocket connection opened");
         ws.send(JSON.stringify({ type: "upload" }));
