@@ -108,15 +108,15 @@ export default function DragAndDrop() {
 
   return (
     <div
-      className="relative w-8 h-8 md:w-[330px] md:h-[330px] border rounded-[32px]"
+      className="relative w-full h-64 md:w-80 md:h-80 lg:w-[330px] lg:h-[330px] border rounded-[32px] mx-auto"
       style={{
         boxShadow:
           "0 0 12px 0 rgba(0, 0, 0, .1), 0 10px 30px 0 rgba(0, 0, 0, .2)",
-        border: "2px solid #2d2d36", // Added border style
+        border: "2px solid #2d2d36",
       }}
     >
       {link ? (
-        <div className="flex space-x-5">
+        <div className="flex flex-wrap space-x-5">
           <UploadCard fileName={file?.name || "Unknown File"} fileLink={link} />
           <div className="text-white">
             <h2 className="text-2xl font-bold mb-4">
@@ -150,7 +150,7 @@ export default function DragAndDrop() {
               />
               <label
                 htmlFor="fileInput"
-                className="flex flex-col items-center justify-center"
+                className="flex flex-col items-center justify-center p-2"
               >
                 {file ? (
                   <p>{file.name}</p>
@@ -170,7 +170,7 @@ export default function DragAndDrop() {
                         d="M12 4v16m8-8H4"
                       />
                     </svg>
-                    <p className="text-center text-2px">
+                    <p className="text-center">
                       Click to browse or drag files here to start sharing
                     </p>
                   </>
