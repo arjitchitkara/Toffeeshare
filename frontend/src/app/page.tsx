@@ -1,13 +1,8 @@
-"use client";
 import Image from "next/image";
 import DragAndDrop from "@/components/ui/DragAndDrop";
 import Link from "next/link";
-import { useMediaQuery } from "react-responsive";
 
 export default function Home() {
-  const isDesktopOrLaptop = useMediaQuery({ minWidth: 1224 });
-  const isTabletOrMobile = useMediaQuery({ maxWidth: 1224 });
-
   return (
     <div className="bg-[#2d2d36] text-white min-h-screen flex flex-col">
       <header className="flex justify-between items-center p-4 bg-[#2d2d36]">
@@ -15,20 +10,18 @@ export default function Home() {
           <Image
             src="/logo.42a58a0d.png"
             alt="logo"
-            width={100}
-            height={100}
+            width={40}
+            height={40}
             style={{ height: "auto" }}
           />
           <div className="ml-2">
-            <span className="text-lg font-bold" style={{ height: "100%" }}>
-              ToffeeShare
-            </span>
+            <span className="text-lg font-bold">ToffeeShare</span>
             <span className="block text-sm text-white-400">
               Making sharing sweet
             </span>
           </div>
         </div>
-        <nav className={`space-x-4 ${isTabletOrMobile ? "text-sm" : "mr-20"}`}>
+        <nav className="space-x-4">
           <Link href="/contact">Contact</Link>
           <Link href="/about">About</Link>
           <Link href="/blog">Blog</Link>
@@ -36,8 +29,8 @@ export default function Home() {
           <Link href="/privacy">Privacy</Link>
         </nav>
       </header>
-      <main className="flex flex-1 items-center justify-center p-8 relative overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between w-full max-w-7xl z-10">
+      <main className="flex flex-1 items-center justify-center p-8">
+        <div className="flex flex-wrap items-center justify-between w-full max-w-7xl">
           <div className="relative flex justify-center items-center w-full md:w-1/3 p-4">
             <DragAndDrop />
           </div>
@@ -49,7 +42,7 @@ export default function Home() {
               Send files of any size directly from your device without ever
               storing anything online.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center">
                 <span className="mr-2">
                   <svg
@@ -105,7 +98,7 @@ export default function Home() {
                       d="M160 344h208a80.24 80.24 0 0080-80v-16"
                     ></path>
                   </svg>
-                </span>{" "}
+                </span>
                 Peer-to-peer
               </div>
               <div className="flex items-center">
@@ -121,7 +114,7 @@ export default function Home() {
                   >
                     <path d="M432 208H288l32-192L80 304h144l-32 192z"></path>
                   </svg>
-                </span>{" "}
+                </span>
                 Blazingly fast
               </div>
               <div className="flex items-center">
@@ -157,32 +150,18 @@ export default function Home() {
                       d="M256 50.88V176a32 32 0 0032 32h125.12"
                     ></path>
                   </svg>
-                </span>{" "}
+                </span>
                 End-to-end encrypted
               </div>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1440 320"
-            className="w-full h-48"
-            preserveAspectRatio="none"
-          >
-            <path
-              fill="#2d2d36"
-              d="M0,192L80,181.3C160,171,320,149,480,160C640,171,800,213,960,202.7C1120,192,1280,128,1360,96L1440,64L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
-            ></path>
-          </svg>
-        </div>
       </main>
-      <div className="relative z-10">
-        <div className="text-center p-4 bg-[#2d2d36]">
-          <p className="text-sm text-gray-400">
-            © 2024 ToffeeShare. All rights reserved.
-          </p>
-        </div>
-      </div>
+      <footer className="text-center p-4 bg-[#42424a] rounded-tl-full rounded-tr-full">
+        <p className="text-sm text-gray-400">
+          © 2024 ToffeeShare. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }

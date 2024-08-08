@@ -3,6 +3,7 @@ import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import Peer from "peerjs";
 import UploadCard from "./UploadCard";
+import QRCode from "qrcode.react";
 
 export default function DragAndDrop() {
   const [file, setFile] = useState<File | null>(null);
@@ -106,9 +107,18 @@ export default function DragAndDrop() {
     }
   };
 
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert("Link copied to clipboard!");
+  };
+
   return (
     <div
-      className="relative w-full h-64 md:w-80 md:h-80 lg:w-[330px] lg:h-[330px] border rounded-[32px] mx-auto"
+      className={`relative mx-auto border rounded-[32px] transition-all duration-300 ${
+        link
+          ? "w-full h-auto p-4"
+          : "w-full h-64 md:w-80 md:h-80 lg:w-[330px] lg:h-[330px]"
+      }`}
       style={{
         boxShadow:
           "0 0 12px 0 rgba(0, 0, 0, .1), 0 10px 30px 0 rgba(0, 0, 0, .2)",
@@ -116,17 +126,21 @@ export default function DragAndDrop() {
       }}
     >
       {link ? (
-        <div className="flex flex-wrap space-x-5">
-          <UploadCard fileName={file?.name || "Unknown File"} fileLink={link} />
-          <div className="text-white">
-            <h2 className="text-2xl font-bold mb-4">
-              Now sharing your files directly from your device
-            </h2>
-            <p className="text-gray-400 mb-4">
-              Closing this page means you stop sharing! Simply keep this page
-              open in the background to keep sharing.
-            </p>
+        <div className="flex flex-col items-center justify-center w-full h-full p-4 space-y-4 bg-[#42424a] rounded-[32px] text-white">
+          <p className="font-bold">{file?.name}</p>
+          <p>0.25 MB</p>
+          <div
+            className="text-orange-500 cursor-pointer w-full py-1 px-3 bg-gray-800 rounded-lg border border-gray-600 break-words"
+            onClick={() => copyToClipboard(link)}
+          >
+            {link}
           </div>
+          <QRCode value={link} bgColor="#ffffff" fgColor="#000000" />
+          <p className="text-center">
+            Closing this page means you stop sharing!
+            <br />
+            Simply keep this page open in the background to keep sharing.
+          </p>
         </div>
       ) : (
         <div className="relative w-full h-full">
