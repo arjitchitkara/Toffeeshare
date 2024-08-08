@@ -3,7 +3,6 @@ import { useState, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import Peer from "peerjs";
 import UploadCard from "./UploadCard";
-import Image from "next/image";
 
 export default function DragAndDrop() {
   const [file, setFile] = useState<File | null>(null);
@@ -108,16 +107,18 @@ export default function DragAndDrop() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900">
+    <div
+      className="relative w-8 h-8 md:w-[330px] md:h-[330px] border rounded-[32px]"
+      style={{
+        boxShadow:
+          "0 0 12px 0 rgba(0, 0, 0, .1), 0 10px 30px 0 rgba(0, 0, 0, .2)",
+        border: "2px solid #2d2d36", // Added border style
+      }}
+    >
       {link ? (
-        <div className="flex flex-wrap w-full max-w-7xl p-4">
-          <div className="w-full md:w-1/2">
-            <UploadCard
-              fileName={file?.name || "Unknown File"}
-              fileLink={link}
-            />
-          </div>
-          <div className="w-full md:w-1/2 text-white p-4">
+        <div className="flex space-x-5">
+          <UploadCard fileName={file?.name || "Unknown File"} fileLink={link} />
+          <div className="text-white">
             <h2 className="text-2xl font-bold mb-4">
               Now sharing your files directly from your device
             </h2>
@@ -128,44 +129,54 @@ export default function DragAndDrop() {
           </div>
         </div>
       ) : (
-        <div className="relative flex items-center justify-center">
-          <div className="absolute border-2 border-gray-500 rounded-[40px] w-96 h-96 bg-gray-700" />
-          <div
-            className="relative border-2 border-gray-500 rounded-[40px] w-80 h-80 flex items-center justify-center  m-6"
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-          >
-            <input
-              type="file"
-              className="hidden"
-              onChange={handleFileChange}
-              id="fileInput"
-            />
-            <label
-              htmlFor="fileInput"
-              className={`absolute inset-0 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed rounded-[40px] transition ${
-                dragging ? "border-orange-500" : "border-gray-400"
+        <div className="relative w-full h-full">
+          <div className="absolute inset-0 rounded-[32px] flex items-center justify-center transition-all bg-[#42424a]">
+            <div
+              className={`absolute inset-5 flex flex-col items-center justify-center cursor-pointer border-2 border-dashed rounded-[17px] transition ${
+                dragging
+                  ? "border-orange-500 bg-gray-800"
+                  : "border-gray-400 bg-[#42424a]"
               } hover:bg-gray-600`}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
             >
-              {file ? (
-                <p>{file.name}</p>
-              ) : (
-                <>
-                  <Image
-                    src="/plus.png"
-                    alt="plus"
-                    width={40}
-                    height={40}
-                    className="mb-2"
-                  />
-                  <p className="text-center">
-                    Click to browse or drag files here to start sharing
-                  </p>
-                </>
-              )}
-            </label>
+              <input
+                type="file"
+                className="hidden"
+                onChange={handleFileChange}
+                id="fileInput"
+              />
+              <label
+                htmlFor="fileInput"
+                className="flex flex-col items-center justify-center"
+              >
+                {file ? (
+                  <p>{file.name}</p>
+                ) : (
+                  <>
+                    <svg
+                      className="w-12 h-12 text-orange-500 mb-2"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 4v16m8-8H4"
+                      />
+                    </svg>
+                    <p className="text-center text-2px">
+                      Click to browse or drag files here to start sharing
+                    </p>
+                  </>
+                )}
+              </label>
+            </div>
           </div>
         </div>
       )}
