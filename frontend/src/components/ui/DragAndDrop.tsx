@@ -75,7 +75,7 @@ export default function DragAndDrop() {
 
             peer.on("open", (id) => {
               console.log("Peer connection opened with ID:", id);
-              setLink(`http://localhost:3000/download/${fileId}`);
+              setLink(`https://toffeeshare.vercel.app/download/${fileId}`);
               ws.send(JSON.stringify({ type: "signal", peerId: id }));
             });
 
