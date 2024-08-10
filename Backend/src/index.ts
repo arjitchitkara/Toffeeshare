@@ -1,7 +1,15 @@
+import http from "http";
 import WebSocket, { Server } from "ws";
 import { v4 as uuidv4 } from "uuid";
 
-const wss = new Server({ port: 8080 });
+// Create an HTTP server
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("WebSocket server running.\n");
+});
+
+// Create a WebSocket server
+const wss = new Server({ noServer: true });
 
 wss.on("connection", (ws: WebSocket) => {
   ws.on("message", (message, isBinary) => {
@@ -36,4 +44,15 @@ wss.on("connection", (ws: WebSocket) => {
   });
 });
 
-console.log("Signaling server is running on ws://localhost:8080");
+// Handle the upgrade request from HTTP to WebSocket
+server.on("upgrade", (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit("connection", ws, request);
+  });
+});
+
+// Start the server
+const port = 8080;
+server.listen(port, () => {
+  console.log(`Signaling server is running on http://localhost:${port}`);
+});
