@@ -67,8 +67,8 @@ export default function DragAndDrop() {
             const peer = new Peer(fileId, {
               config: {
                 iceServers: [
-                  { url: "stun:stun.l.google.com:19302" },
-                  { url: "stun:stun1.l.google.com:19302" },
+                  { urls: "stun:stun.l.google.com:19302" },
+                  { urls: "stun:stun1.l.google.com:19302" },
                 ],
               },
             });
